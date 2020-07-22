@@ -14,6 +14,7 @@ class ToDoListUI {
 
           let listItem = document.createElement('li');
           listArea.appendChild(listItem);
+          listItem.setAttribute('id', 'item1');
           listItem.textContent = this.toDoItem;
         }
       }
