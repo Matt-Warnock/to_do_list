@@ -45,6 +45,29 @@ describe('toDoListUI', function() {
 
       expect(listArea.childNodes[0].id).toEqual('item1');
     });
+
+    xit('increments succesive item ids', function() {
+      textInput.value = 'buy a Morbid Angel t-shirt';
+
+      let event = new Event('keydown');
+      event.keyCode = 13;
+      textInput.dispatchEvent(event);
+
+      textInput.value = 'book tickets to Download';
+      textInput.dispatchEvent(event);
+
+      expect(listArea.childNodes[1].id).toEqual('item2');
+    });
+
+    it('clears the textInput contents after returning', function() {
+      textInput.value = 'Read Anton laVey\'s Satanic Bible';
+
+      let event = new Event('keydown');
+      event.keyCode = 13;
+      textInput.dispatchEvent(event);
+
+      expect(textInput.value).toEqual('');
+    });
   });
 
   function setupDOM() {
