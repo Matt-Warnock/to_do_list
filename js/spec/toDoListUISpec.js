@@ -1,13 +1,12 @@
 describe('toDoListUI', function() {
-  let textInput = document.createElement('input'),
-  listArea = document.createElement('ul'),
-  toDoListUI;
+  let textInput,
+      listArea,
+      toDoListUI;
 
   describe('when adding a to-do', function() {
 
     beforeEach(function () {
       setupDOM();
-
       toDoListUI = new ToDoListUI();
       toDoListUI.initialise();
     });
@@ -46,7 +45,7 @@ describe('toDoListUI', function() {
       expect(listArea.childNodes[0].id).toEqual('item1');
     });
 
-    xit('increments succesive item ids', function() {
+    it('increments succesive item ids', function() {
       textInput.value = 'buy a Morbid Angel t-shirt';
 
       let event = new Event('keydown');
@@ -71,6 +70,8 @@ describe('toDoListUI', function() {
   });
 
   function setupDOM() {
+    textInput = document.createElement('input');
+    listArea = document.createElement('ul');
     document.body.appendChild(textInput);
     document.body.appendChild(listArea);
     textInput.setAttribute('type', 'text');
