@@ -18,7 +18,7 @@ class ToDoListUI {
 
     listItem.setAttribute('id', `item${this.itemCount}`);
     this.itemCount += 1;
-    
+
     listItem.textContent = this.toDoItem;
   }
 
@@ -34,10 +34,18 @@ class ToDoListUI {
           this.toDoItem = this.userInput.value;
           this._createListItem();
           this._clearUserInput();
+          this.listListener();
         }
 
       }
     });
+  }
 
+  listListener() {
+    this.listArea.addEventListener('click', event => {
+      let itemClicked = event.target.id;
+      
+      document.getElementById(itemClicked).id = 'stroke';
+    });
   }
 }

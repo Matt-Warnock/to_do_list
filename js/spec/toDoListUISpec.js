@@ -3,17 +3,17 @@ describe('toDoListUI', function() {
       listArea,
       toDoListUI;
 
+  beforeEach(function () {
+    setupDOM();
+    toDoListUI = new ToDoListUI();
+    toDoListUI.initialise();
+  });
+
+  afterEach(function() {
+    removeDOM();
+  });
+
   describe('when adding a to-do', function() {
-
-    beforeEach(function () {
-      setupDOM();
-      toDoListUI = new ToDoListUI();
-      toDoListUI.initialise();
-    });
-
-    afterEach(function() {
-      removeDOM();
-    });
 
     it('adds a to-do item to the list', function() {
       textInput.value = 'listen to Slayer';
@@ -51,6 +51,18 @@ describe('toDoListUI', function() {
       userEnterEvent();
 
       expect(textInput.value).toEqual('');
+    });
+  });
+
+  describe('when checking list', function() {
+
+    it('strikes to-do item when user clicks it', function() {
+      textInput.value = 'listen to Slayer';
+      userEnterEvent();
+
+      document.getElementById('item1').click();
+
+      expect(listArea.childNodes[0].id).toEqual('stroke');
     });
   });
 
