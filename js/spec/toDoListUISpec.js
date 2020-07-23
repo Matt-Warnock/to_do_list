@@ -14,6 +14,7 @@ describe('toDoListUI', function() {
   });
 
   describe('when adding a to-do', function() {
+    let sVGContainer;
 
     it('adds a to-do item to the list', function() {
       textInput.value = 'listen to Slayer';
@@ -62,7 +63,7 @@ describe('toDoListUI', function() {
 
       document.getElementById('item1').click();
 
-      expect(listArea.childNodes[0].id).toEqual('stroke');
+      expect(listArea.childNodes[0].className).toEqual('stroke');
     });
 
     it('removes stroked to-do item when user clicks it', function() {
@@ -70,9 +71,24 @@ describe('toDoListUI', function() {
       userEnterEvent();
 
       document.getElementById('item1').click();
-      document.getElementById('stroke').click();
+      document.querySelector('.stroke').click();
+
 
       expect(listArea.childNodes[0]).toBe(undefined);
+    });
+
+    it('removes stroked to-do item when user clicks it', function() {
+      setupDOMSVG();
+      textInput.value = 'listen to Slayer';
+      userEnterEvent();
+
+      document.getElementById('item1').click();
+
+      let sVGElement = document.querySelector('.punk');
+
+      expect(sVGElement.firstElementChild.classList[0]).toEqual('shown');
+
+      sVGContainer.remove();
     });
   });
 
@@ -105,5 +121,14 @@ describe('toDoListUI', function() {
     let event = new Event('keydown');
     event.keyCode = 13;
     textInput.dispatchEvent(event);
+  }
+
+  function setupDOMSVG() {
+    sVGContainer = document.createElement('div');
+    sVGContainer.innerHTML = `<svg class="punk">
+                              <g class="hidden"></g>
+                              <g class="hidden"></g>
+                              </svg>`;
+    document.body.appendChild(sVGContainer);
   }
 });
