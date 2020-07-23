@@ -64,6 +64,16 @@ describe('toDoListUI', function() {
 
       expect(listArea.childNodes[0].id).toEqual('stroke');
     });
+
+    it('removes stroked to-do item when user clicks it', function() {
+      textInput.value = 'listen to Slayer';
+      userEnterEvent();
+
+      document.getElementById('item1').click();
+      document.getElementById('stroke').click();
+
+      expect(listArea.childNodes[0]).toBe(undefined);
+    });
   });
 
   function setupDOM() {

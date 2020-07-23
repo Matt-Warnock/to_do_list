@@ -43,9 +43,14 @@ class ToDoListUI {
 
   listListener() {
     this.listArea.addEventListener('click', event => {
-      let itemClicked = event.target.id;
-      
-      document.getElementById(itemClicked).id = 'stroke';
+      let itemClicked = event.target.id,
+          listElement = document.getElementById(itemClicked);
+
+      if (itemClicked === 'stroke') {
+        listElement.remove();
+        return;
+      }
+      listElement.id = 'stroke';
     });
   }
 }
