@@ -1,22 +1,19 @@
 class ToDoListUI {
-  constructor() {
+  constructor(iDs) {
+    this.inputId = iDs.inputId;
+    this.listId = iDs.listId;
+    this.sVGIds = iDs.sVGIds;
     this.toDoItem = '';
     this.itemCount = 1;
     this.strokedItems = -1;
-    this.sVGIds = ['body',
-                   'hair',
-                   'clothes',
-                   'mic',
-                   'left-blast',
-                   'right-blast'];
   }
 
   get userInput() {
-    return document.getElementById('to_do');
+    return document.getElementById(this.inputId);
   }
 
   get listArea() {
-    return document.getElementById('list');
+    return document.getElementById(this.listId);
   }
 
   _createListItem(userInput) {

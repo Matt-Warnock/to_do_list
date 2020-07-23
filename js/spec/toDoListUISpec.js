@@ -5,7 +5,7 @@ describe('toDoListUI', function() {
 
   beforeEach(function () {
     setupDOM();
-    toDoListUI = new ToDoListUI();
+    toDoListUI = new ToDoListUI(iDs);
     toDoListUI.initialise();
   });
 
@@ -179,4 +179,15 @@ describe('toDoListUI', function() {
                               </svg>`;
     document.body.appendChild(sVGContainer);
   }
+
+  const iDs = {
+    inputId: 'to_do',
+    listId: 'list',
+    sVGIds: ['body',
+    'hair',
+    'clothes',
+    'mic',
+    'left-blast',
+    'right-blast']
+  };
 });
