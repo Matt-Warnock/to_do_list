@@ -2,6 +2,13 @@ class ToDoListUI {
   constructor() {
     this.toDoItem = '';
     this.itemCount = 1;
+    this.strokedItems = -1;
+    this.sVGIds = ['body',
+                   'hair',
+                   'clothes',
+                   'mic',
+                   'left-blast',
+                   'right-blast'];
   }
 
   get userInput() {
@@ -12,14 +19,14 @@ class ToDoListUI {
     return document.getElementById('list');
   }
 
-  _createListItem() {
+  _createListItem(userInput) {
     let listItem = document.createElement('li');
     this.listArea.appendChild(listItem);
 
     listItem.setAttribute('id', `item${this.itemCount}`);
-    this.itemCount += 1;
+    this.itemCount ++;
 
-    listItem.textContent = this.toDoItem;
+    listItem.textContent = userInput;
   }
 
   _clearUserInput() {
@@ -27,14 +34,13 @@ class ToDoListUI {
   }
 
   initialise() {
+    this.listListener();
     this.userInput.addEventListener('keydown', event => {
       if (event.keyCode === 13) {
 
         if (/\w{3,}/g.exec(this.userInput.value)) {
-          this.toDoItem = this.userInput.value;
-          this._createListItem();
+          this._createListItem(this.userInput.value);
           this._clearUserInput();
-          this.listListener();
         }
 
       }
@@ -50,16 +56,18 @@ class ToDoListUI {
         listElement.remove();
         return;
       }
-      listElement.className = 'stroke';
-      this.strokedItems += 1;
+      this.strikeThoughItem(listElement);
       this.revealSVGSection();
     });
   }
 
-  revealSVGSection() {
-    let sVGIds = ['body', 'hair', 'clothes', 'mic', 'left-blast', 'right-blast'];
+  strikeThoughItem(listElement) {
+    listElement.className = 'stroke';
+    this.strokedItems ++;
+  }
 
-    let target = document.querySelector(`#${sVGIds[0]}`);
-    target.setAttribute('class', 'shown');
+  revealSVGSection() {
+    let sVGSection = document.querySelector(`#${this.sVGIds[this.strokedItems]}`);
+    sVGSection.setAttribute('class', 'shown');
   }
 }

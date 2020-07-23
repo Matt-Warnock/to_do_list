@@ -77,7 +77,7 @@ describe('toDoListUI', function() {
       expect(listArea.childNodes[0]).toBe(undefined);
     });
 
-    it('when click on stroked item reveals section of SVG image', function() {
+    it('click on stroked item reveals section of SVG image', function() {
 
       textInput.value = 'listen to Slayer';
       userEnterEvent();
@@ -87,6 +87,50 @@ describe('toDoListUI', function() {
       let sVGBodyElement = document.getElementById('body');
 
       expect(sVGBodyElement.classList[0]).toEqual('shown');
+    });
+
+    it('click on second stroked item reveals next section of SVG image', function() {
+
+      textInput.value = 'listen to Slayer';
+      userEnterEvent();
+      textInput.value = 'learn to pose without smiling';
+      userEnterEvent();
+
+      document.getElementById('item1').click();
+      document.getElementById('item2').click();
+
+      let sVGBodyElement = document.getElementById('hair');
+
+      expect(sVGBodyElement.classList[0]).toEqual('shown');
+    });
+
+    xit('stops when all SVG sections are reveled', function() {
+
+      textInput.value = 'listen to Panatra';
+      userEnterEvent();
+      textInput.value = 'Get neck massage after headbanging too much';
+      userEnterEvent();
+      textInput.value = '3rd thing';
+      userEnterEvent();
+      textInput.value = 'listen to Slayer';
+      userEnterEvent();
+      textInput.value = 'learn to pose without smiling';
+      userEnterEvent();
+      textInput.value = 'dye hair even more black';
+      userEnterEvent();
+      textInput.value = 'too many';
+      userEnterEvent();
+
+
+      document.getElementById('item1').click();
+      document.getElementById('item2').click();
+      document.getElementById('item3').click();
+      document.getElementById('item4').click();
+      document.getElementById('item5').click();
+      document.getElementById('item6').click();
+      document.getElementById('item7').click();
+
+      expect(document).toThrow('Uncaught TypeError: target is null');
     });
   });
 
@@ -128,6 +172,10 @@ describe('toDoListUI', function() {
     sVGContainer.innerHTML = `<svg class="punk">
                               <g id="body" class="hidden"></g>
                               <g id="hair" class="hidden"></g>
+                              <g id="clothes" class="hidden"></g>
+                              <g id="mic" class="hidden"></g>
+                              <g id="left-blast" class="hidden"></g>
+                              <g id="right-blast" class="hidden"></g>
                               </svg>`;
     document.body.appendChild(sVGContainer);
   }
