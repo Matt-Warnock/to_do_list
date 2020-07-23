@@ -51,7 +51,15 @@ class ToDoListUI {
         return;
       }
       listElement.className = 'stroke';
-
+      this.strokedItems += 1;
+      this.revealSVGSection();
     });
+  }
+
+  revealSVGSection() {
+    let sVGIds = ['body', 'hair', 'clothes', 'mic', 'left-blast', 'right-blast'];
+
+    let target = document.querySelector(`#${sVGIds[0]}`);
+    target.setAttribute('class', 'shown');
   }
 }

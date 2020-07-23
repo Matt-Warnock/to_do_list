@@ -77,18 +77,16 @@ describe('toDoListUI', function() {
       expect(listArea.childNodes[0]).toBe(undefined);
     });
 
-    it('removes stroked to-do item when user clicks it', function() {
-      setupDOMSVG();
+    it('when click on stroked item reveals section of SVG image', function() {
+
       textInput.value = 'listen to Slayer';
       userEnterEvent();
 
       document.getElementById('item1').click();
 
-      let sVGElement = document.querySelector('.punk');
+      let sVGBodyElement = document.getElementById('body');
 
-      expect(sVGElement.firstElementChild.classList[0]).toEqual('shown');
-
-      sVGContainer.remove();
+      expect(sVGBodyElement.classList[0]).toEqual('shown');
     });
   });
 
@@ -100,12 +98,14 @@ describe('toDoListUI', function() {
     textInput.setAttribute('type', 'text');
     textInput.setAttribute('id', 'to_do');
     listArea.setAttribute('id', 'list');
+    setupDOMSVG();
   }
 
   function removeDOM() {
     removeListAreaChildren();
     textInput.remove();
     listArea.remove();
+    sVGContainer.remove();
   }
 
   function removeListAreaChildren() {
@@ -126,8 +126,8 @@ describe('toDoListUI', function() {
   function setupDOMSVG() {
     sVGContainer = document.createElement('div');
     sVGContainer.innerHTML = `<svg class="punk">
-                              <g class="hidden"></g>
-                              <g class="hidden"></g>
+                              <g id="body" class="hidden"></g>
+                              <g id="hair" class="hidden"></g>
                               </svg>`;
     document.body.appendChild(sVGContainer);
   }
