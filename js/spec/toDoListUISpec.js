@@ -13,7 +13,7 @@ describe('toDoListUI', function() {
     removeDOM();
   });
 
-  xdescribe('when adding a to-do', function() {
+  describe('when adding a to-do', function() {
     let sVGContainer;
 
     it('adds a to-do item to the list', function() {

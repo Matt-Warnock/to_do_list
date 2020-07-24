@@ -15,8 +15,8 @@
     <label for="to_do">'what needs to be done?'</label>
     <input type="text" id="to_do" name="to_do" placeholder="headbang">
   </div>
-  <ul class="list">
-    
+  <ul id="list" class="list">
+
   </ul>
 
   <svg class="punk" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
@@ -93,6 +93,25 @@
       style="fill:#f04b59" />
     </g>
   </svg>
+
+  <script src="js/src/toDoListUI.js"></script>
+  <script type="text/javascript">
+
+  const iDs = {
+    inputId: 'to_do',
+    listId: 'list',
+    sVGIds: ['body',
+    'hair',
+    'clothes',
+    'mic',
+    'left-blast',
+    'right-blast']
+  };
+
+  toDoListUI = new ToDoListUI(iDs);
+  toDoListUI.initialise();
+
+  </script>
 
 </body>
 
