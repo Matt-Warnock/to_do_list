@@ -13,7 +13,7 @@ describe('toDoListUI', function() {
     removeDOM();
   });
 
-  describe('when adding a to-do', function() {
+  xdescribe('when adding a to-do', function() {
     let sVGContainer;
 
     it('adds a to-do item to the list', function() {
@@ -86,7 +86,7 @@ describe('toDoListUI', function() {
 
       let sVGBodyElement = document.getElementById('body');
 
-      expect(sVGBodyElement.classList[0]).toEqual('shown');
+      expect(sVGBodyElement.classList.value).toEqual('shown');
     });
 
     it('click on second stroked item reveals next section of SVG image', function() {
@@ -101,36 +101,34 @@ describe('toDoListUI', function() {
 
       let sVGBodyElement = document.getElementById('hair');
 
-      expect(sVGBodyElement.classList[0]).toEqual('shown');
+      expect(sVGBodyElement.classList.value).toEqual('shown');
     });
 
-    xit('stops when all SVG sections are reveled', function() {
+    it('stops when all SVG sections are reveled', function() {
 
-      textInput.value = 'listen to Panatra';
-      userEnterEvent();
-      textInput.value = 'Get neck massage after headbanging too much';
-      userEnterEvent();
-      textInput.value = '3rd thing';
-      userEnterEvent();
-      textInput.value = 'listen to Slayer';
-      userEnterEvent();
-      textInput.value = 'learn to pose without smiling';
-      userEnterEvent();
-      textInput.value = 'dye hair even more black';
-      userEnterEvent();
-      textInput.value = 'too many';
-      userEnterEvent();
+      let itemText = ['listen to Panatra',
+                      'Get neck massage after headbanging too much',
+                      '3rd thing',
+                      'listen to Slayer',
+                      'learn to pose without smiling',
+                      'dye hair even more black',
+                      'too many'];
 
+      for (var i = 0; i < itemText.length; i++) {
+        textInput.value = itemText[i];
+        userEnterEvent();
+        document.getElementById(`item${i +1}`).click();
+      }
 
-      document.getElementById('item1').click();
-      document.getElementById('item2').click();
-      document.getElementById('item3').click();
-      document.getElementById('item4').click();
-      document.getElementById('item5').click();
-      document.getElementById('item6').click();
-      document.getElementById('item7').click();
+      function areAllSectionShown() {
+        let sVGImageSections = Array.from(document.querySelector('.punk').children);
 
-      expect(document).toThrow('Uncaught TypeError: target is null');
+        return sVGImageSections.every(section => {
+          return section.classList.value === 'shown';
+        });
+      }
+
+      expect(areAllSectionShown()).toBe(true);
     });
   });
 
@@ -154,11 +152,11 @@ describe('toDoListUI', function() {
 
   function removeListAreaChildren() {
     let e = listArea,
-    child = e.lastElementChild;
-    while (child) {
-      e.removeChild(child);
-      child = e.lastElementChild;
-    }
+        child = e.lastElementChild;
+        while (child) {
+          e.removeChild(child);
+          child = e.lastElementChild;
+        }
   }
 
   function userEnterEvent() {
@@ -184,10 +182,10 @@ describe('toDoListUI', function() {
     inputId: 'to_do',
     listId: 'list',
     sVGIds: ['body',
-    'hair',
-    'clothes',
-    'mic',
-    'left-blast',
-    'right-blast']
+             'hair',
+             'clothes',
+             'mic',
+             'left-blast',
+             'right-blast']
   };
 });

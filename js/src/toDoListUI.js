@@ -64,7 +64,9 @@ class ToDoListUI {
   }
 
   revealSVGSection() {
-    let sVGSection = document.querySelector(`#${this.sVGIds[this.strokedItems]}`);
-    sVGSection.setAttribute('class', 'shown');
+    if (this.strokedItems < this.sVGIds.length) {
+      let sVGSection = document.querySelector(`#${this.sVGIds[this.strokedItems]}`);
+      sVGSection.setAttribute('class', 'shown');
+    }
   }
 }
