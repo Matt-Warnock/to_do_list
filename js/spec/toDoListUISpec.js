@@ -14,7 +14,6 @@ describe('toDoListUI', function() {
   });
 
   describe('when adding a to-do', function() {
-    let sVGContainer;
 
     it('adds a to-do item to the list', function() {
       textInput.value = 'listen to Slayer';
@@ -84,7 +83,7 @@ describe('toDoListUI', function() {
 
       document.getElementById('item1').click();
 
-      let sVGBodyElement = document.getElementById('body');
+      let sVGBodyElement = document.getElementById(iDs.sVGIds[0]);
 
       expect(sVGBodyElement.classList.value).toEqual('shown');
     });
@@ -99,9 +98,9 @@ describe('toDoListUI', function() {
       document.getElementById('item1').click();
       document.getElementById('item2').click();
 
-      let sVGBodyElement = document.getElementById('hair');
+      let sVGHairElement = document.getElementById(iDs.sVGIds[1]);
 
-      expect(sVGBodyElement.classList.value).toEqual('shown');
+      expect(sVGHairElement.classList.value).toEqual('shown');
     });
 
     it('stops when all SVG sections are reveled', function() {
@@ -121,7 +120,7 @@ describe('toDoListUI', function() {
       }
 
       function areAllSectionShown() {
-        let sVGImageSections = Array.from(document.querySelector('.punk').children);
+        let sVGImageSections = Array.from(document.querySelector('svg').children);
 
         return sVGImageSections.every(section => {
           return section.classList.value === 'shown';
@@ -138,8 +137,8 @@ describe('toDoListUI', function() {
     document.body.appendChild(textInput);
     document.body.appendChild(listArea);
     textInput.setAttribute('type', 'text');
-    textInput.setAttribute('id', 'to_do');
-    listArea.setAttribute('id', 'list');
+    textInput.setAttribute('id', iDs.inputId);
+    listArea.setAttribute('id', iDs.listId);
     setupDOMSVG();
   }
 
@@ -167,14 +166,15 @@ describe('toDoListUI', function() {
 
   function setupDOMSVG() {
     sVGContainer = document.createElement('div');
-    sVGContainer.innerHTML = `<svg class="punk">
-                              <g id="body" class="hidden"></g>
-                              <g id="hair" class="hidden"></g>
-                              <g id="clothes" class="hidden"></g>
-                              <g id="mic" class="hidden"></g>
-                              <g id="left-blast" class="hidden"></g>
-                              <g id="right-blast" class="hidden"></g>
-                              </svg>`;
+    sVGContainer.innerHTML =
+    `<svg>
+    <g id=${iDs.sVGIds[0]} class="hidden"></g>
+    <g id=${iDs.sVGIds[1]} class="hidden"></g>
+    <g id=${iDs.sVGIds[2]} class="hidden"></g>
+    <g id=${iDs.sVGIds[3]} class="hidden"></g>
+    <g id=${iDs.sVGIds[4]} class="hidden"></g>
+    <g id=${iDs.sVGIds[5]} class="hidden"></g>
+    </svg>`;
     document.body.appendChild(sVGContainer);
   }
 

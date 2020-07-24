@@ -18,12 +18,16 @@ class ToDoListUI {
 
   _createListItem(userInput) {
     let listItem = document.createElement('li');
-    this.listArea.appendChild(listItem);
 
+    this.listArea.appendChild(listItem);
+    listItem.textContent = userInput;
+
+    this._createItemId(listItem);
+  }
+
+  _createItemId(listItem) {
     listItem.setAttribute('id', `item${this.itemCount}`);
     this.itemCount ++;
-
-    listItem.textContent = userInput;
   }
 
   _clearUserInput() {
