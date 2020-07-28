@@ -1,8 +1,8 @@
 class ToDoListUI {
-  constructor(iDs) {
-    this.inputId = iDs.inputId;
-    this.listId = iDs.listId;
-    this.sVGIds = iDs.sVGIds;
+  constructor(ids) {
+    this.inputId = ids.inputId;
+    this.listId = ids.listId;
+    this.sVGIds = ids.sVGIds;
     this.toDoItem = '';
     this.itemCount = 1;
     this.strokedItems = -1;
@@ -37,13 +37,12 @@ class ToDoListUI {
   initialise() {
     this.listListener();
     this.userInput.addEventListener('keydown', event => {
-      if (event.keyCode === 13) {
-
-        if (/\w{3,}/g.exec(this.userInput.value)) {
+      if (event.code === 'Enter') {
+        if (/^\s*$/g.exec(this.userInput.value)) {
+          return;
+        }
           this._createListItem(this.userInput.value);
           this._clearUserInput();
-        }
-
       }
     });
   }
@@ -53,7 +52,7 @@ class ToDoListUI {
       let itemClicked = event.target,
           listElement = document.getElementById(itemClicked.id);
 
-      if (itemClicked.className === 'stroke') {
+      if (Array.from(itemClicked.classList).includes('stroke')) {
         listElement.remove();
         return;
       }
@@ -63,14 +62,14 @@ class ToDoListUI {
   }
 
   strikeThoughItem(listElement) {
-    listElement.className = 'stroke';
+    listElement.classList.add('stroke');
     this.strokedItems ++;
   }
 
   revealSVGSection() {
     if (this.strokedItems < this.sVGIds.length) {
       let sVGSection = document.querySelector(`#${this.sVGIds[this.strokedItems]}`);
-      sVGSection.setAttribute('class', 'shown');
+      sVGSection.removeAttribute('class', 'hidden');
     }
   }
 }

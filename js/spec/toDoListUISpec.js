@@ -1,11 +1,12 @@
 describe('toDoListUI', function() {
   let textInput,
       listArea,
-      toDoListUI;
+      toDoListUI,
+      sVGContainer;
 
   beforeEach(function () {
     setupDOM();
-    toDoListUI = new ToDoListUI(iDs);
+    toDoListUI = new ToDoListUI(ids);
     toDoListUI.initialise();
   });
 
@@ -16,39 +17,32 @@ describe('toDoListUI', function() {
   describe('when adding a to-do', function() {
 
     it('adds a to-do item to the list', function() {
-      textInput.value = 'listen to Slayer';
-      userEnterEvent();
+      addToDo('test');
 
-      expect(listArea.childNodes[0].textContent).toEqual('listen to Slayer');
+      expect(listArea.lastChild.textContent).toEqual('test');
     });
 
     it('does not add item to the list if the input is empty', function() {
-      textInput.value = '';
-      userEnterEvent();
+      addToDo('');
 
       expect(listArea.hasChildNodes()).toBe(false);
     });
 
     it('sets the items id', function() {
-      textInput.value = 'Rock some lether';
-      userEnterEvent();
+      addToDo('test');
 
-      expect(listArea.childNodes[0].id).toEqual('item1');
+      expect(listArea.lastChild.id).toEqual('item1');
     });
 
     it('increments succesive item ids', function() {
-      textInput.value = 'buy a Morbid Angel t-shirt';
-      userEnterEvent();
+      addToDo('test');
+      addToDo('second test');
 
-      textInput.value = 'book tickets to Download';
-      userEnterEvent();
-
-      expect(listArea.childNodes[1].id).toEqual('item2');
+      expect(listArea.lastChild.id).toEqual('item2');
     });
 
     it('clears the textInput contents after returning', function() {
-      textInput.value = 'Read Anton laVey\'s Satanic Bible';
-      userEnterEvent();
+      addToDo('test');
 
       expect(textInput.value).toEqual('');
     });
@@ -57,73 +51,57 @@ describe('toDoListUI', function() {
   describe('when checking list', function() {
 
     it('strikes to-do item when user clicks it', function() {
-      textInput.value = 'listen to Slayer';
-      userEnterEvent();
+      addToDo('test');
 
-      document.getElementById('item1').click();
+      listArea.lastChild.click();
 
-      expect(listArea.childNodes[0].className).toEqual('stroke');
+      expect(listArea.lastChild.classList).toContain('stroke');
     });
 
     it('removes stroked to-do item when user clicks it', function() {
-      textInput.value = 'listen to Slayer';
-      userEnterEvent();
+      addToDo('test');
 
-      document.getElementById('item1').click();
-      document.querySelector('.stroke').click();
+      listArea.lastChild.click();
+      listArea.lastChild.click();
 
 
-      expect(listArea.childNodes[0]).toBe(undefined);
+      expect(listArea.lastChild).toBe(null);
     });
 
     it('click on stroked item reveals section of SVG image', function() {
+      addToDo('test');
 
-      textInput.value = 'listen to Slayer';
-      userEnterEvent();
+      listArea.lastChild.click();
 
-      document.getElementById('item1').click();
+      let sVGBodyElement = document.getElementById(ids.sVGIds[0]);
 
-      let sVGBodyElement = document.getElementById(iDs.sVGIds[0]);
-
-      expect(sVGBodyElement.classList.value).toEqual('shown');
+      expect(sVGBodyElement.classList).not.toContain('hidden');
     });
 
     it('click on second stroked item reveals next section of SVG image', function() {
+      addToDo('test');
+      addToDo('second test');
 
-      textInput.value = 'listen to Slayer';
-      userEnterEvent();
-      textInput.value = 'learn to pose without smiling';
-      userEnterEvent();
+      listArea.firstChild.click();
+      listArea.lastChild.click();
 
-      document.getElementById('item1').click();
-      document.getElementById('item2').click();
+      let sVGHairElement = document.getElementById(ids.sVGIds[1]);
 
-      let sVGHairElement = document.getElementById(iDs.sVGIds[1]);
-
-      expect(sVGHairElement.classList.value).toEqual('shown');
+      expect(sVGHairElement.classList).not.toContain('hidden');
     });
 
     it('stops when all SVG sections are reveled', function() {
+      let sVGImageSections = document.querySelector('g');
 
-      let itemText = ['listen to Panatra',
-                      'Get neck massage after headbanging too much',
-                      '3rd thing',
-                      'listen to Slayer',
-                      'learn to pose without smiling',
-                      'dye hair even more black',
-                      'too many'];
-
-      for (var i = 0; i < itemText.length; i++) {
-        textInput.value = itemText[i];
-        userEnterEvent();
-        document.getElementById(`item${i +1}`).click();
-      }
+      Array.from(sVGImageSections.length +1).forEach(() => {
+        addToDo('test');
+        listArea.lastChild.click();
+      });
 
       function areAllSectionShown() {
-        let sVGImageSections = Array.from(document.querySelector('svg').children);
 
-        return sVGImageSections.every(section => {
-          return section.classList.value === 'shown';
+        return Array.from(sVGImageSections).every(section => {
+          return section.classList.not.toContain('hidden');
         });
       }
 
@@ -131,61 +109,55 @@ describe('toDoListUI', function() {
     });
   });
 
+  function addToDo(text) {
+    textInput.value = text;
+
+    let event = new Event('keydown');
+    event.code = 'Enter';
+    textInput.dispatchEvent(event);
+  }
+
   function setupDOM() {
     textInput = document.createElement('input');
     listArea = document.createElement('ul');
     document.body.appendChild(textInput);
     document.body.appendChild(listArea);
     textInput.setAttribute('type', 'text');
-    textInput.setAttribute('id', iDs.inputId);
-    listArea.setAttribute('id', iDs.listId);
+    textInput.setAttribute('id', ids.inputId);
+    listArea.setAttribute('id', ids.listId);
     setupDOMSVG();
-  }
-
-  function removeDOM() {
-    removeListAreaChildren();
-    textInput.remove();
-    listArea.remove();
-    sVGContainer.remove();
-  }
-
-  function removeListAreaChildren() {
-    let e = listArea,
-        child = e.lastElementChild;
-        while (child) {
-          e.removeChild(child);
-          child = e.lastElementChild;
-        }
-  }
-
-  function userEnterEvent() {
-    let event = new Event('keydown');
-    event.keyCode = 13;
-    textInput.dispatchEvent(event);
   }
 
   function setupDOMSVG() {
     sVGContainer = document.createElement('div');
     sVGContainer.innerHTML =
     `<svg>
-    <g id=${iDs.sVGIds[0]} class="hidden"></g>
-    <g id=${iDs.sVGIds[1]} class="hidden"></g>
-    <g id=${iDs.sVGIds[2]} class="hidden"></g>
-    <g id=${iDs.sVGIds[3]} class="hidden"></g>
-    <g id=${iDs.sVGIds[4]} class="hidden"></g>
-    <g id=${iDs.sVGIds[5]} class="hidden"></g>
+    <g id=${ids.sVGIds[0]} class="hidden"></g>
+    <g id=${ids.sVGIds[1]} class="hidden"></g>
+    <g id=${ids.sVGIds[2]} class="hidden"></g>
+    <g id=${ids.sVGIds[3]} class="hidden"></g>
+    <g id=${ids.sVGIds[4]} class="hidden"></g>
+    <g id=${ids.sVGIds[5]} class="hidden"></g>
     </svg>`;
     document.body.appendChild(sVGContainer);
   }
 
-  const iDs = {
+  function removeDOM() {
+    textInput.remove();
+    listArea.remove();
+    sVGContainer.remove();
+  }
+  
+  const ids = {
     inputId: 'to_do',
     listId: 'list',
-    sVGIds: ['body',
-             'hair',
-             'clothes',
-             'mic',
-             'left-blast',
-             'right-blast']
+    sVGIds: [
+      'body',
+      'hair',
+      'clothes',
+      'mic',
+      'left-blast',
+      'right-blast'
+    ]
   };
 });
